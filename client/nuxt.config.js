@@ -1,7 +1,7 @@
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'client',
+    title: 'Troov',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -14,7 +14,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [],
+  plugins: ['~/plugins/vee-validate'],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -28,14 +28,21 @@ export default {
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     // https://go.nuxtjs.dev/bootstrap
-    'bootstrap-vue/nuxt',
+    ['bootstrap-vue/nuxt', { icons: true }],
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost:9000/api',
+    common: {
+      Accept: 'application/json',
+    },
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
+  build: {
+    transpile: ['vee-validate/dist/rules'],
+  },
 }
