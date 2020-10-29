@@ -42,7 +42,7 @@ const postController = {
     });
   },
   update: (req, res) => {
-    const { id } = req.params;
+    const { id } = req.body;
 
     Post.findByIdAndUpdate(id, req.body, { new: true }, (err, post) => {
       if (err) {
