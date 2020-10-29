@@ -15,18 +15,10 @@
             {{ post.content }}
           </b-card-text>
           <div slot="footer" class="d-flex">
-            <b-button v-b-modal.modal-1 variant="success">
+            <b-button variant="success" :to="post._id">
               Edit
               <b-icon icon="pencil-square" class="ml-1" />
             </b-button>
-            <b-modal id="modal-1" title="Edit post">
-              <p class="my-4">ModalForm</p>
-              <template #modal-footer="{ cancel }">
-                <b-button size="sm" variant="danger" @click="cancel()">
-                  Cancel
-                </b-button>
-              </template>
-            </b-modal>
             <form class="ml-2" @submit.prevent="onSubmit(post._id)">
               <b-button variant="danger" type="submit">
                 Delete
@@ -41,13 +33,8 @@
 </template>
 
 <script>
-// import ModalForm from '../components/ModalForm'
-
 export default {
   layout: 'navbar',
-  components: {
-    // ModalForm,
-  },
   async asyncData({ $axios }) {
     return { posts: await $axios.$get('/post') }
   },
