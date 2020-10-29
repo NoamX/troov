@@ -19,7 +19,7 @@ router.get("/:id", (req, res) => {
   readOne(req, res);
 });
 
-router.patch("/", (req, res) => {
+router.patch("/:id", (req, res) => {
   update(req, res);
 });
 
