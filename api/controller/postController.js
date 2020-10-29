@@ -32,7 +32,7 @@ const postController = {
     }).sort({ createdAt: -1 });
   },
   readOne: (req, res) => {
-    const { id } = req.body;
+    const { id } = req.params;
     Post.findById(id, (err, post) => {
       if (err) {
         return formatResponse(res, 400, { error: "Bad Request" });
