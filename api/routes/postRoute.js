@@ -15,11 +15,11 @@ router.get("/", (req, res) => {
   read(req, res);
 });
 
-router.post("/post", (req, res) => {
+router.get("/:id", (req, res) => {
   readOne(req, res);
 });
 
-router.patch("/:id", (req, res) => {
+router.patch("/", (req, res) => {
   update(req, res);
 });
 
