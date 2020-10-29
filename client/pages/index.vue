@@ -1,63 +1,75 @@
 <template>
-  <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">client</h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
+  <b-container>
+    <b-row align-h="center">
+      <b-col cols="8">
+        <b-card
+          v-for="post in posts"
+          :key="post._id"
+          class="mb-3 bg-light"
+          :title="post.title"
+          :sub-title="formatDate(post.createdAt)"
+          sub-title-tag="small"
+          border-variant="dark"
         >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
-  </div>
+          <b-card-text class="pt-4 text-block">
+            {{ post.content }}
+          </b-card-text>
+          <div slot="footer" class="d-flex">
+            <b-button variant="success" :to="post._id">
+              Edit
+              <b-icon icon="pencil-square" class="ml-1" />
+            </b-button>
+            <form class="ml-2" @submit.prevent="onSubmit(post._id)">
+              <b-button variant="danger" type="submit">
+                Delete
+                <b-icon icon="trash" class="ml-1" />
+              </b-button>
+            </form>
+          </div>
+        </b-card>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
-export default {}
+export default {
+  layout: 'navbar',
+  async asyncData({ $axios }) {
+    return { posts: await $axios.$get('/post') }
+  },
+  data: () => ({
+    posts: [],
+  }),
+  methods: {
+    onSubmit(id) {
+      fetch('http://localhost:9000/api/post', {
+        method: 'delete',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          window.location.reload()
+        })
+        .catch((err) => err)
+
+      // this.$axios.$delete('/post', { data: { id } }) does not work...
+    },
+    formatDate(date) {
+      return new Date(date).toLocaleString().replace(',', ' at')
+    },
+  },
+}
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+.text-block {
+  white-space: pre-line;
 }
 </style>
