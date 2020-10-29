@@ -45,7 +45,11 @@ export default {
         content: this.content,
       })
 
-      window.location.reload()
+      if (window.location.href === 'http://localhost:3000/') {
+        window.location.reload()
+      } else {
+        this.$router.push('/')
+      }
     },
   },
 }
